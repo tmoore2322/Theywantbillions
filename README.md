@@ -43,9 +43,9 @@ launcher only exists so the browser does not cache stale files while you are edi
 | 5 | Agitprop Van | paints buildings: painted tiles take 50% more damage and pull the Wave; Print Shop scrubs |
 | 7 | Seizure Crew | ignores colonists, channels industry and the vault into Occupied |
 | 9 | ANTIFA Goon | packs of 3, jumps walls and gates, hunts Print Shop, Deed Office, Town Hall |
-| 9 | Tankie | armor 6, gate and tower breaker |
+| 9 | Heavy At Every Size | body-positivity brute on a reinforced mobility scooter; armor 6, gate and tower breaker |
 | 10 | Nevertheless | two HP bars (Persist), megaphone deafens units and towers (half fire rate) in 4 tiles |
-| 12 | Thicc Support | body-positivity healer on a mobility scooter; heals Man-Children, Tankies and Goons |
+| 12 | Care Bear | adult in a pastel bear fursuit; heals Man-Children, Heavies and Goons |
 
 ### Lieutenants
 
@@ -62,7 +62,7 @@ Killing a lieutenant returns 150 gold, drops Momentum 10 and raises Trust 5. Bos
 | Day | Boss | Mechanic |
 |---|---|---|
 | 17 | **War Communism**, the Kitchen Train | Activists who die within 5 tiles of it stand back up after 6 s, once |
-| 18 | **Gosplan Annex**, the Walking Filing Hall | siphons 30% of your income into a Public Fund bar; each time it fills, a Tankie steps out |
+| 18 | **Gosplan Annex**, the Walking Filing Hall | siphons 30% of your income into a Public Fund bar; each time it fills, a Heavy At Every Size rolls out |
 | 19 | **Listening Session**, the HR Dais | every 30 s, after a 5 s warning, freezes the build tray and unit commands for 9 s; Courthouse and Print Shop each cut 2 s |
 | 20 | **The Committee on Equity & Alignment** | 9000 HP, armor 8. Aura 8: occupation 50% faster, repairs double, Momentum locked at 80+. At each HP quarter it tables a Resolution: gates frozen open 15 s, an unattended farm collectivized, Seizure channels doubled 30 s, or a leftover lieutenant summoned. Touching the Town Hall is an instant loss. A random lieutenant rides with it. |
 

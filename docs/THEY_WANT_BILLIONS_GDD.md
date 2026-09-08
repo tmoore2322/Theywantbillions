@@ -115,7 +115,7 @@ Sprawl is tempting and punished. Compact, deeded, watched towns are the intended
 |---|---|---|
 | Ranger | **Minuteman** | Quiet scout. Clears fog edge without pulling the whole Wave. |
 | Soldier | **Citizen Militia** | Loud line infantry. Upkeep while mobilized. Dismiss between waves. |
-| Sniper | **Marksman** | Deletes specials (Man-Child, Thicc Support, Agitprop, Nevertheless persist ring). |
+| Sniper | **Marksman** | Deletes specials (Man-Child, Care Bear, Agitprop, Nevertheless persist ring). |
 | Lucifer | **Sheriff’s Posse** | Cone / scatter cleanup after a breach. Cannot fire through walls. |
 | Thanatos | **Field Piece** | Wagon cannon. Wave-breaker. Expensive. |
 | Titan | **Veteran Company** | Few, late, hold a gate during recapture. |
@@ -209,10 +209,10 @@ Adult units only. **Man-Child** is an oversized **adult** in a onesie, not a chi
 | **Man-Child** | Chubby | High HP. At 50% HP: **Tantrum** (short stun) then occupy nearest cottage/school. |
 | **ANTIFA Goon** | Harpy | Wall jump. Priority: Town Hall, Print Shop, Radio, Deed Office. Small packs. Optional short-range fire pot vs wood towers. |
 | **Agitprop Van** | Venom | Paints buildings. Painted tiles flip faster and pull pathing. Print Shop scrapes paint. |
-| **Tankie** | Armored special | Gate/tower breaker. Escorts the rest in. |
+| **Heavy At Every Size** | Armored special (mobility scooter) | Body-positivity brute on a reinforced scooter with a ram bumper. Gate/tower breaker. Escorts the rest in. |
 | **Seizure Crew** | Sapper | Beelines industry and Treasury. Nationalize channel. |
 | **Nevertheless** | Support | Feminist meme unit. Pink pussyhat, megaphone. **Persist:** two HP bars (pink ring is bar two). **Megaphone Blast:** cone Deafen (fire-rate / accuracy down). Paths with blob toward School/Chapel. Does **not** lock towers (that is a boss-only HR trick). |
-| **Thicc Support** | Support (mobility scooter) | Body-positivity healer on a rolling scooter ("Every body is a wave body"). Rolls with the blob; heals Man-Children, Tankies and Goons. Marksman food. |
+| **Care Bear** | Support (furry) | Adult in a pastel bear fursuit, heart on the chest. Heals Man-Children and Heavies. Marksman food. |
 
 ### Lieutenants (named parody — mechanics, not portraits)
 
@@ -228,7 +228,7 @@ Use titles in shipped UI if likeness risk is a concern.
 ### Map / chapter bosses (later)
 
 - War Communism — kitchen train; nearby dead Activists stand back up slowly.
-- Gosplan Annex — walking filing hall; siphon income into a public-fund bar that spawns Tankies when full.
+- Gosplan Annex — walking filing hall; siphon income into a public-fund bar that spawns Heavies when full.
 - Listening Session — freezes build menu / rally for a short announced window. Courthouse + Print Shop shorten it.
 - **The Committee on Equity & Alignment** — final. Giant dais. Auras: faster occupation, slower repairs, Momentum locked high. At HP quarters it tables Resolutions (gates freeze open, flip an unattended farm, double Seizure speed, summon a leftover lieutenant). If it **touches Town Hall**, instant lose (charter superseded), even if Hall has HP. Highlighted on minimap like a TAB Giant.
 
@@ -238,8 +238,8 @@ Use titles in shipped UI if likeness risk is a concern.
 |---|---|
 | 1–4 | Activists, few Organizers |
 | 5–8 | + Man-Children, first Agitprop |
-| 9–12 | + ANTIFA Goon, Tankie, one lieutenant |
-| 13–16 | Seizure Crews every wave, Thicc Support |
+| 9–12 | + ANTIFA Goon, Heavy At Every Size, one lieutenant |
+| 13–16 | Seizure Crews every wave, Care Bears |
 | 17–19 | Map boss (War Communism / Gosplan) between waves |
 | 20 | Committee + leftover lieutenant add |
 

@@ -250,7 +250,7 @@ const UI = {
     const org = G.organized; if (org) warns.push(org + ' homesteader(s) ORGANIZED: households -' + org + ' until those Activists are put down');
     const mil = G.units.filter(u => !u.dead && u.type === 'militia').length; if (mil && !G.wave) warns.push(mil + ' militia mobilized: -' + (mil * UNITS.militia.upkeep * DAY_LENGTH).toFixed(0) + ' gold/day. Dismiss (K) between waves.');
     if (G.tech.current) warns.push('Researching ' + TECH[G.tech.current].name + ': ' + Math.ceil(G.tech.timer) + 's');
-    if (G.gosplan) warns.push('GOSPLAN ANNEX siphons 30% of your income. Public Fund: ' + Math.floor(G.publicFund) + '/' + G.gosplan.def.siphon.cap + ' — a Tankie when full.');
+    if (G.gosplan) warns.push('GOSPLAN ANNEX siphons 30% of your income. Public Fund: ' + Math.floor(G.publicFund) + '/' + G.gosplan.def.siphon.cap + ' — a Heavy when full.');
     if (G.committee && !G.committee.dead) warns.push('THE COMMITTEE IS ON THE MAP: ' + Math.round(G.committee.hp) + '/' + G.committee.maxHp + ' HP. Do not let it touch the Town Hall.');
     if (G.gatesOpen > 0) warns.push('RESOLUTION: gates frozen open for ' + Math.ceil(G.gatesOpen) + 's');
     if (G.seizureBoost > 0) warns.push('RESOLUTION: Seizure channels doubled for ' + Math.ceil(G.seizureBoost) + 's');

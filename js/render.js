@@ -233,10 +233,18 @@ function drawUnit(ctx, u, zoom, icon) {
     drawBlock(ctx, u.x - 0.45, u.y - 0.3, 0.9, 0.6, 0.7, '#6a3d9a');
     ctx.fillStyle = '#5ff0ff'; ctx.fillRect(X - 6, Y - 30, 12, 8); ctx.fillStyle = '#c9b48a'; ctx.fillRect(X + 8, Y - 34, 2, 12); ctx.fillStyle = '#eee'; ctx.beginPath(); ctx.moveTo(X + 9, Y - 34); ctx.lineTo(X + 16, Y - 40); ctx.lineTo(X + 16, Y - 28); ctx.closePath(); ctx.fill();
     ctx.fillStyle = '#ff5fd0'; ctx.font = 'bold 7px monospace'; ctx.textAlign = 'center'; ctx.fillText('RIGGED', X - 6, Y - 10);
-  } else if (t === 'tankie') {
-    ctx.fillStyle = '#5a1a1a'; ctx.fillRect(X - 13, Y - 30, 26, 28); ctx.fillStyle = '#7a2a2a'; ctx.fillRect(X - 16, Y - 24, 6, 18); ctx.fillRect(X + 10, Y - 24, 6, 18);
-    ctx.fillStyle = '#2a0a0a'; ctx.fillRect(X - 6, Y - 38, 12, 9);
-    ctx.fillStyle = '#ffe14d'; ctx.beginPath(); for (let i = 0; i < 5; i++) { const a = -Math.PI / 2 + i * Math.PI * 2 / 5; const a2 = a + Math.PI / 5; ctx.lineTo(X + Math.cos(a) * 6, Y - 18 + Math.sin(a) * 6); ctx.lineTo(X + Math.cos(a2) * 2.5, Y - 18 + Math.sin(a2) * 2.5); } ctx.closePath(); ctx.fill();
+  } else if (t === 'haes') {
+    // reinforced mobility scooter with a battering-ram bumper
+    ctx.fillStyle = '#5a1a1a'; ctx.fillRect(X - 20, Y - 10, 40, 8);
+    ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(X - 14, Y - 3, 5, 0, 7); ctx.arc(X + 14, Y - 3, 5, 0, 7); ctx.fill();
+    ctx.fillStyle = '#8f8f8f'; ctx.fillRect(X + 18, Y - 22, 8, 20); ctx.fillStyle = '#c9c4b4'; ctx.fillRect(X + 22, Y - 26, 6, 4); ctx.fillRect(X + 22, Y - 8, 6, 4); // ram plate
+    ctx.fillStyle = '#c9c4b4'; ctx.fillRect(X + 12, Y - 38, 2, 28); ctx.fillRect(X + 6, Y - 39, 14, 3);
+    ctx.fillStyle = '#ff7ab8'; ctx.beginPath(); ctx.ellipse(X - 3, Y - 20, 16, 15, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#ffffff'; ctx.font = 'bold 6px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('EVERY', X - 3, Y - 22); ctx.fillText('BODY', X - 3, Y - 16);
+    ctx.fillStyle = '#e8c8a8'; ctx.beginPath(); ctx.arc(X - 3, Y - 39, 6, 0, 7); ctx.fill();
+    ctx.fillStyle = '#5ff0ff'; ctx.fillRect(X - 9, Y - 43, 12, 2.5);
+    ctx.fillStyle = '#e8c8a8'; ctx.fillRect(X + 4, Y - 30, 8, 3);
+    ctx.fillStyle = '#c9b48a'; ctx.fillRect(X - 22, Y - 50, 1.5, 42); ctx.fillStyle = '#a6ff4d'; ctx.fillRect(X - 21, Y - 50, 14, 8); ctx.fillStyle = '#1a2a10'; ctx.font = 'bold 5px sans-serif'; ctx.fillText('HAES', X - 14, Y - 44);
   } else if (t === 'seizure') {
     for (const dx of [-6, 6]) { person(ctx, X + dx, Y, '#2d2d33', '#3a2a1a', { sash: '#d23c2f' }); ctx.fillStyle = '#8a6a3a'; ctx.fillRect(X + dx + 4, Y - 8, 5, 6); }
     ctx.fillStyle = '#c9b48a'; ctx.fillRect(X - 3, Y - 24, 6, 2);
@@ -245,21 +253,19 @@ function drawUnit(ctx, u, zoom, icon) {
     person(ctx, X, Y, '#ff8fd8', '#5a3a2a', { hat: '#ff5fd0' });
     ctx.fillStyle = '#eee'; ctx.beginPath(); ctx.moveTo(X + 5, Y - 18); ctx.lineTo(X + 14, Y - 24); ctx.lineTo(X + 14, Y - 12); ctx.closePath(); ctx.fill();
     if (!u.persistUsed) { ctx.strokeStyle = '#ff5fd0'; ctx.lineWidth = 2; ctx.shadowColor = '#ff5fd0'; ctx.shadowBlur = 8; ctx.beginPath(); ctx.ellipse(X, Y, 14, 7, 0, 0, 7); ctx.stroke(); ctx.shadowBlur = 0; }
-  } else if (t === 'thicc') {
-    // mobility scooter: deck, wheels, tiller
-    ctx.fillStyle = '#b23a2f'; ctx.fillRect(X - 16, Y - 8, 32, 6);
-    ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(X - 12, Y - 2, 4, 0, 7); ctx.arc(X + 12, Y - 2, 4, 0, 7); ctx.fill();
-    ctx.fillStyle = '#c9c4b4'; ctx.fillRect(X + 12, Y - 34, 2, 26); ctx.fillRect(X + 6, Y - 35, 14, 3);
-    ctx.fillStyle = '#ffe14d'; ctx.fillRect(X + 14, Y - 20, 6, 8); // basket
-    // rider: big round body in a bright tee, small head, headband
-    ctx.fillStyle = '#ff7ab8'; ctx.beginPath(); ctx.ellipse(X - 2, Y - 18, 14, 13, 0, 0, 7); ctx.fill();
-    ctx.fillStyle = '#ffffff'; ctx.font = 'bold 6px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('EVERY', X - 2, Y - 20); ctx.fillText('BODY', X - 2, Y - 14);
-    ctx.fillStyle = '#e8c8a8'; ctx.beginPath(); ctx.arc(X - 2, Y - 35, 6, 0, 7); ctx.fill();
-    ctx.fillStyle = '#5ff0ff'; ctx.fillRect(X - 8, Y - 39, 12, 2.5);
-    ctx.fillStyle = '#e8c8a8'; ctx.fillRect(X + 4, Y - 26, 8, 3); // arm to the tiller
-    // flag: "HAES"
-    ctx.fillStyle = '#c9b48a'; ctx.fillRect(X - 18, Y - 46, 1.5, 40); ctx.fillStyle = '#a6ff4d'; ctx.fillRect(X - 17, Y - 46, 14, 8); ctx.fillStyle = '#1a2a10'; ctx.font = 'bold 5px sans-serif'; ctx.fillText('HAES', X - 10, Y - 40);
-    if (!icon) { ctx.strokeStyle = 'rgba(255,122,184,0.5)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.ellipse(X, Y, u.def.heals.radius * 32, u.def.heals.radius * 16, 0, 0, 7); ctx.stroke(); }
+  } else if (t === 'carebear') {
+    // adult in a pastel bear fursuit: round body, big ears, muzzle, heart, tail, lanyard
+    ctx.fillStyle = '#c9a0e8'; ctx.beginPath(); ctx.ellipse(X - 14, Y - 6, 5, 4, 0, 0, 7); ctx.fill(); // tail
+    ctx.fillStyle = '#b48ad8'; ctx.beginPath(); ctx.ellipse(X, Y - 14, 13, 15, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#e8d0f8'; ctx.beginPath(); ctx.ellipse(X, Y - 10, 7, 8, 0, 0, 7); ctx.fill(); // belly patch
+    ctx.fillStyle = '#d23c2f'; ctx.beginPath(); ctx.moveTo(X, Y - 6); ctx.lineTo(X - 5, Y - 12); ctx.lineTo(X, Y - 15); ctx.lineTo(X + 5, Y - 12); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#b48ad8'; ctx.beginPath(); ctx.arc(X - 9, Y - 33, 5, 0, 7); ctx.arc(X + 9, Y - 33, 5, 0, 7); ctx.fill(); ctx.fillStyle = '#e8d0f8'; ctx.beginPath(); ctx.arc(X - 9, Y - 33, 2.5, 0, 7); ctx.arc(X + 9, Y - 33, 2.5, 0, 7); ctx.fill();
+    ctx.fillStyle = '#b48ad8'; ctx.beginPath(); ctx.arc(X, Y - 28, 8, 0, 7); ctx.fill();
+    ctx.fillStyle = '#e8d0f8'; ctx.beginPath(); ctx.ellipse(X, Y - 25, 4.5, 3.5, 0, 0, 7); ctx.fill(); ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(X, Y - 26.5, 1.5, 0, 7); ctx.fill();
+    ctx.fillStyle = '#111'; ctx.fillRect(X - 4, Y - 31, 2, 2); ctx.fillRect(X + 2, Y - 31, 2, 2);
+    ctx.fillStyle = '#ffe14d'; ctx.fillRect(X - 1, Y - 20, 2, 8); ctx.fillStyle = '#f3e9cf'; ctx.fillRect(X - 3, Y - 12, 6, 4); // lanyard + badge
+    ctx.fillStyle = '#c9a0e8'; ctx.beginPath(); ctx.arc(X - 12, Y - 16, 4, 0, 7); ctx.arc(X + 12, Y - 16, 4, 0, 7); ctx.fill(); // paws
+    if (!icon) { ctx.strokeStyle = 'rgba(180,138,216,0.5)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.ellipse(X, Y, u.def.heals.radius * 32, u.def.heals.radius * 16, 0, 0, 7); ctx.stroke(); }
   } else if (t === 'sernie') {
     drawBlock(ctx, u.x - 0.6, u.y - 0.5, 1.2, 1.0, 0.8, '#b08a2a');
     ctx.fillStyle = '#5a4a12'; ctx.fillRect(X - 8, Y - 40, 16, 16); ctx.fillStyle = '#c9a227'; ctx.beginPath(); ctx.arc(X, Y - 32, 5, 0, 7); ctx.fill();

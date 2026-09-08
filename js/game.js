@@ -219,7 +219,7 @@ function damageEnemyBuilding(b, amt) {
     G.raids++; G.momentum = clamp(G.momentum + 5, 0, 100);
     const bl = ENCAMP_DEF.backlash; const list = [];
     for (const t in bl) for (let i = 0; i < bl[t] + Math.floor(G.day / 4); i++) list.push(t);
-    if (G.day >= 9) list.push('goon', 'goon', 'goon'); if (G.day >= 12) list.push('thicc');
+    if (G.day >= 9) list.push('goon', 'goon', 'goon'); if (G.day >= 12) list.push('carebear');
     const cx = b.x + 1.5, cy = b.y + 1.5;
     removeBuilding(b); fx('boom', cx, cy);
     for (const t of list) { const p = freeTileNear({ x: cx | 0, y: cy | 0, w: 1, h: 1 }); const u = spawnUnit(t, p.x + (Math.random() - 0.5), p.y + (Math.random() - 0.5)); u.idle = false; u.wave = false; }
@@ -443,7 +443,7 @@ function updateEnemy(u, dt) {
   // retarget periodically
   u.retarget -= dt;
   if (u.retarget <= 0 || !u.target || !G.bmap.get(u.target) || G.bmap.get(u.target).state !== 'player') { u.retarget = 3 + Math.random(); enemyPickTarget(u); u.next = -1; }
-  // Thicc Support: shadow a patient
+  // Care Bear: shadow a patient
   if (u.def.heals) {
     const pat = nearestUnit(u.x, u.y, 14, 'enemy', p => p !== u && u.def.heals.types.includes(p.type) && !p.idle);
     if (pat) { if (Math.hypot(pat.x - u.x, pat.y - u.y) > 1.8) { const tt = unitTile(pat); const key = 'e:t' + tt; if (u.fieldKey !== key) { u.fieldKey = key; u.next = -1; } followField(u, getField(key, [tt], enemyCost), dt); } return; }
@@ -716,8 +716,8 @@ function updateEconomy(dt) {
     G.muster.queue--; recountHouseholds(); if (G.muster.queue > 0) G.muster.timer = Math.max(0.4, musterDelay() * 0.4); } }
   if (G.trainQ.length) { const q = G.trainQ[0]; q.timer -= dt; if (q.timer <= 0) { G.trainQ.shift(); const d = UNITS[q.type]; const src = G.buildings.find(b => b.type === d.from && b.state === 'player') || G.hall; const p = freeTileNear(src); spawnUnit(q.type, p.x, p.y); recountHouseholds(); msg(d.name + ' ready.', 'info'); } }
   if (G.gosplan && G.publicFund >= G.gosplan.def.siphon.cap) {
-    G.publicFund -= G.gosplan.def.siphon.cap; const g = G.gosplan; const t = spawnUnit('tankie', g.x + 0.8, g.y + 0.5); t.idle = false; t.wave = true;
-    msg('The Public Fund is full. A Tankie steps out of the Gosplan stacks.', 'bad'); fx('lt', g.x, g.y);
+    G.publicFund -= G.gosplan.def.siphon.cap; const g = G.gosplan; const t = spawnUnit('haes', g.x + 0.8, g.y + 0.5); t.idle = false; t.wave = true;
+    msg('The Public Fund is full. A Heavy At Every Size rolls out of the Gosplan stacks.', 'bad'); fx('lt', g.x, g.y);
   }
   updateTech(dt);
 }
