@@ -115,7 +115,7 @@ Sprawl is tempting and punished. Compact, deeded, watched towns are the intended
 |---|---|---|
 | Ranger | **Minuteman** | Quiet scout. Clears fog edge without pulling the whole Wave. |
 | Soldier | **Citizen Militia** | Loud line infantry. Upkeep while mobilized. Dismiss between waves. |
-| Sniper | **Marksman** | Deletes specials (Man-Child, Care Bear, Agitprop, Nevertheless persist ring). |
+| Sniper | **Marksman** | Deletes specials (Man-Child, Thicc Support, Agitprop, Nevertheless persist ring). |
 | Lucifer | **Sheriff’s Posse** | Cone / scatter cleanup after a breach. Cannot fire through walls. |
 | Thanatos | **Field Piece** | Wagon cannon. Wave-breaker. Expensive. |
 | Titan | **Veteran Company** | Few, late, hold a gate during recapture. |
@@ -212,7 +212,7 @@ Adult units only. **Man-Child** is an oversized **adult** in a onesie, not a chi
 | **Tankie** | Armored special | Gate/tower breaker. Escorts the rest in. |
 | **Seizure Crew** | Sapper | Beelines industry and Treasury. Nationalize channel. |
 | **Nevertheless** | Support | Feminist meme unit. Pink pussyhat, megaphone. **Persist:** two HP bars (pink ring is bar two). **Megaphone Blast:** cone Deafen (fire-rate / accuracy down). Paths with blob toward School/Chapel. Does **not** lock towers (that is a boss-only HR trick). |
-| **Care Bear** | Support beast | Heals Man-Children and Tankies. Marksman food. |
+| **Thicc Support** | Support (mobility scooter) | Body-positivity healer on a rolling scooter ("Every body is a wave body"). Rolls with the blob; heals Man-Children, Tankies and Goons. Marksman food. |
 
 ### Lieutenants (named parody — mechanics, not portraits)
 
@@ -239,7 +239,7 @@ Use titles in shipped UI if likeness risk is a concern.
 | 1–4 | Activists, few Organizers |
 | 5–8 | + Man-Children, first Agitprop |
 | 9–12 | + ANTIFA Goon, Tankie, one lieutenant |
-| 13–16 | Seizure Crews every wave, Care Bears |
+| 13–16 | Seizure Crews every wave, Thicc Support |
 | 17–19 | Map boss (War Communism / Gosplan) between waves |
 | 20 | Committee + leftover lieutenant add |
 
