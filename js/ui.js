@@ -43,13 +43,27 @@ const UI = {
     $('btn-resume').addEventListener('click', () => { this.el.overlay.hidden = true; G.paused = false; });
     $('btn-seed-random').addEventListener('click', () => { $('seed').value = 1 + Math.floor(Math.random() * 99999); $('map').value = 'random'; });
     $('map').addEventListener('change', () => { if ($('map').value === 'random' && !(+$('seed').value)) $('seed').value = 1 + Math.floor(Math.random() * 99999); });
-    $('btn-restart').addEventListener('click', () => this.start());
     $('btn-close-help').addEventListener('click', () => { $('help').hidden = true; });
     document.querySelectorAll('button').forEach(b => b.addEventListener('click', () => b.blur()));
-    this.setTab('frontier');
+    this.setTab('frontier'); this.refreshMenu();
   },
   miniTo(e) { const r = this.el.mini.getBoundingClientRect(); const [tx, ty] = minimapToTile(this.el.mini, e.clientX - r.left, e.clientY - r.top); const [wx, wy] = worldOf(tx, ty); R.cam.x = wx; R.cam.y = wy; },
-  refreshMenu() { const $ = id => document.getElementById(id); $('btn-load').hidden = !hasSave(); },
+  refreshMenu() {
+    const $ = id => document.getElementById(id); $('btn-load').hidden = !hasSave();
+    const p = campaignProgress(); const list = $('missions'); list.innerHTML = '';
+    MISSIONS.forEach((m, i) => {
+      const locked = i > p.unlocked; const done = p.done.includes(m.id);
+      const el = document.createElement('button'); el.className = 'mission' + (locked ? ' locked' : '') + (done ? ' done' : ''); el.disabled = locked;
+      el.innerHTML = `<div class="mn">${i + 1}. ${m.name}${done ? ' ✓' : ''}${locked ? ' 🔒' : ''}</div><div class="md">${m.days} days · waves ×${m.waves}</div><div class="mb">${m.blurb}</div>`;
+      el.title = m.objective; el.addEventListener('click', () => this.startMission(m.id)); list.appendChild(el);
+    });
+  },
+  startMission(id) {
+    Sound.unlock(); newGame({ mission: id }); buildTerrainCanvas(); G.selected = [];
+    const [wx, wy] = worldOf(G.hall.x + 1.5, G.hall.y + 2.5); R.cam.x = wx; R.cam.y = wy; R.cam.zoom = 1;
+    this.el.overlay.hidden = true; document.getElementById('end').hidden = true; this.el.tech.hidden = true;
+    G.paused = false; this.refreshMsgs(); this.buildTray(); this.cardKey = '';
+  },
   load() { Sound.unlock(); if (!loadGame()) return; buildTerrainCanvas(); this.el.overlay.hidden = true; document.getElementById('end').hidden = true; this.el.tech.hidden = true; G.paused = false; this.refreshMsgs(); this.buildTray(); this.cardKey = ''; },
   start() {
     Sound.unlock();
@@ -66,6 +80,10 @@ const UI = {
     document.getElementById('end-title').textContent = G.won ? 'THE FISCAL YEAR IS SURVIVED' : 'THE CHARTER IS SUPERSEDED';
     document.getElementById('end-title').className = G.won ? 'good' : 'bad';
     document.getElementById('end-why').textContent = G.overWhy;
+    const next = G.mission ? MISSIONS[MISSIONS.indexOf(G.mission) + 1] : null; const nb = document.getElementById('btn-next');
+    nb.hidden = !(G.won && next); if (next) { nb.textContent = 'Next: ' + next.name; nb.onclick = () => this.startMission(next.id); }
+    document.getElementById('btn-restart').textContent = G.mission ? (G.won ? 'Back to Menu' : 'Retry ' + G.mission.name) : 'Found a New Town';
+    document.getElementById('btn-restart').onclick = () => { if (G.mission && !G.won) this.startMission(G.mission.id); else if (G.mission) { document.getElementById('end').hidden = true; this.el.overlay.hidden = false; this.refreshMenu(); } else this.start(); };
     const s = G.stats;
     document.getElementById('end-stats').innerHTML = `<div>Days survived: <b>${G.day}</b></div><div>Waves beaten: <b>${G.wavesBeaten}</b></div><div>Wave units dispersed: <b>${s.killed}</b></div><div>Lieutenants downed: <b>${s.lts}</b></div><div>Buildings occupied: <b>${s.flips}</b></div><div>Recaptured: <b>${s.recaptured}</b></div><div>Defenses lost: <b>${s.lost}</b></div><div>Tech researched: <b>${G.tech.done.size}/${Object.keys(TECH).length}</b></div><div>Treasury: <b>${Math.floor(G.res.treasury)}</b></div><div>Trust <b>${Math.round(G.trust)}</b> · Momentum <b>${Math.round(G.momentum)}</b></div>`;
     if (G.won) Sound.good();
@@ -233,10 +251,10 @@ const UI = {
     e.wood.textContent = this.fmt(r.wood); e.stone.textContent = this.fmt(r.stone); e.iron.textContent = this.fmt(r.iron); e.food.textContent = this.fmt(r.food) + (G.foodShort ? ' ⚠' : '');
     e.hh.textContent = G.hh.used + '/' + G.hh.cap; e.gold.textContent = this.fmt(r.gold); e.treasury.textContent = this.fmt(r.treasury);
     e.trustFill.style.width = G.trust + '%'; e.trustVal.textContent = Math.round(G.trust) + '/100';
-    e.day.textContent = G.day; e.chapter.textContent = chapterName(G.day) + (G.day >= WIN_DAY ? ' — FINAL' : '');
+    e.day.textContent = G.day; e.chapter.textContent = (G.mission ? G.mission.name + ' · ' : '') + chapterName(G.day) + (G.day >= G.winDay ? ' — FINAL' : '');
     const t = Math.ceil(G.dayTimer); const mm = Math.floor(t / 60), ss = t % 60;
     const waveOn = G.wave && (G.wave.alive || G.wave.spawned < G.wave.list.length);
-    if (G.day >= WIN_DAY) { e.countdown.textContent = waveOn ? (G.wave.alive + G.wave.list.length - G.wave.spawned) : 'HOLD'; e.clabel.textContent = waveOn ? 'FINAL WAVE ON THE MAP' : 'NO MORE WAVES'; }
+    if (G.day >= G.winDay) { e.countdown.textContent = waveOn ? (G.wave.alive + G.wave.list.length - G.wave.spawned) : 'HOLD'; e.clabel.textContent = waveOn ? 'FINAL WAVE ON THE MAP' : 'NO MORE WAVES'; }
     else { e.countdown.textContent = mm + ':' + (ss < 10 ? '0' : '') + ss; e.clabel.textContent = waveOn ? 'WAVE ON THE MAP: ' + (G.wave.alive + G.wave.list.length - G.wave.spawned) + ' · NEXT IN' : 'UNTIL NEXT WAVE'; }
     e.countdown.className = waveOn ? 'hot' : '';
     renderClock(e.clock);

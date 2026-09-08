@@ -249,4 +249,23 @@ const DIFFICULTY = {
 const START_TRUST = 50, START_MOMENTUM = 10;
 const RES_ORDER = ['wood', 'stone', 'iron', 'food', 'gold'];
 
+// Campaign: seven missions following the GDD chapter titles. `schedule` overrides which lieutenant/boss
+// rides with a given day's wave; 'full' keeps the survival schedule. Days = the final wave day.
+const MISSIONS = [
+  { id:'study',     name:'Study Group',           days:6,  seed:0,    waves:0.6, res:1.3, schedule:{},
+    blurb:'A quiet county seat and a study group on the quad. Learn the verbs: wall the choke, muster, dismiss, recapture.', objective:'Survive Day 6.' },
+  { id:'strike',    name:'General Strike',        days:9,  seed:1101, waves:0.8, res:1.1, schedule:{},
+    blurb:'Organizers run ahead of the walkers now and go for your homes. Build a Chapel and bleed Momentum.', objective:'Survive Day 9.' },
+  { id:'quad',      name:'Occupied Quad',         days:12, seed:2202, waves:0.9, res:1.0, schedule:{ 8:{ lt:'sernie' } }, preoccupied:3,
+    blurb:'You inherit a town with three buildings already flipped. Sernie Banders and his vacuum wagon arrive on Day 8.', objective:'Recapture the quad. Survive Day 12.' },
+  { id:'warcom',    name:'War Communism',         days:14, seed:3303, waves:1.0, res:1.0, schedule:{ 10:{ lt:'liz' }, 13:{ boss:'warcommunism' } },
+    blurb:'Liz Barren regulates you on Day 10; the kitchen train rolls in on Day 13. Fight far from it or kill it fast.', objective:'Survive Day 14.' },
+  { id:'inspect',   name:'Cultural Inspection',   days:16, seed:4404, waves:1.0, res:0.95, schedule:{ 9:{ lt:'sernie' }, 12:{ lt:'alex' }, 15:{ boss:'listening' } },
+    blurb:'HR is holding a Listening Session on Day 15. A Courthouse and a Print Shop shorten it.', objective:'Survive Day 16.' },
+  { id:'shock',     name:'Five-Year Shock',       days:18, seed:5505, waves:1.1, res:0.9, schedule:{ 10:{ lt:'liz' }, 13:{ lt:'alex' }, 16:{ boss:'gosplan' }, 17:{ boss:'warcommunism' } },
+    blurb:'Gosplan Annex siphons the budget on Day 16 and War Communism follows. Keep the Public Fund from filling.', objective:'Survive Day 18.' },
+  { id:'committee', name:'The Committee Arrives', days:20, seed:0,    waves:1.2, res:0.9, schedule:'full',
+    blurb:'Everything at once on the County Seat. The Committee tables its Resolutions on Day 20. Do not let it touch the Hall.', objective:'Adjourn the Committee.' },
+];
+
 const NEON = ['#ff5fd0', '#5ff0ff', '#a6ff4d', '#ffe14d', '#ff7a4d'];

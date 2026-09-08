@@ -149,11 +149,11 @@ One research at a time, gold plus time, at the Town Hall.
 | `js/map.js` | the hand-authored County Seat plus the seeded procedural generator and reachability check |
 | `js/path.js` | grid Dijkstra flow fields. Walls are finite cost for the Wave (they chew through), infinite for you |
 | `js/game.js` | simulation: economy tick, occupation / recapture, Seizure channel, tantrum, waves, Trust / Momentum, vision |
-| `js/render.js` | isometric renderer, placeholder art built from primitives, fog, minimap |
+| `js/render.js` | isometric renderer, placeholder art built from primitives, sprite cache for unit bodies, fog, minimap |
 | `js/ui.js` | input, placement, selection, HUD, selection card |
 | `js/main.js` | fixed-step loop (30 Hz sim, speed 1×/2×/3×) |
 | `dev/simtest.js` | load in the browser console to auto-build a town and fast-forward N days, optionally with a crude autopilot |
-| `dev/unittests.js` | 44 scenario tests covering every mechanic (goon jump, persist, paint, lieutenants, bosses, raids, freeze, maps, homesteaders, save/load, win) |
+| `dev/unittests.js` | 48 scenario tests covering every mechanic (goon jump, persist, paint, lieutenants, bosses, raids, freeze, maps, homesteaders, save/load, win) |
 | `dev/serve.py` | no-cache static server used by `run.sh` |
 
 ## Dev harness
@@ -168,6 +168,23 @@ eval(await (await fetch('/dev/unittests.js')).text()); runTests()
 The first builds a walled test town and simulates fifteen days in a few seconds with a crude autopilot (it repairs,
 musters, dismisses, adds towers, researches). It currently dies around Day 11, which is the intended shape: it never
 recaptures, so Momentum climbs. The second runs the scenario tests and returns PASS/FAIL per mechanic.
+
+### Campaign
+
+Seven missions follow the GDD's chapter titles, each on its own map with its own day count, wave scale and
+lieutenant/boss schedule. Winning one unlocks the next; progress lives in the browser's local storage.
+
+| # | Mission | Days | Twist |
+|---|---|---|---|
+| 1 | Study Group | 6 | County Seat, waves ×0.6, fat start |
+| 2 | General Strike | 9 | Organizers hunt homes; build a Chapel |
+| 3 | Occupied Quad | 12 | three cottages start Occupied; Sernie on Day 8 |
+| 4 | War Communism | 14 | Liz on Day 10; the kitchen train on Day 13 |
+| 5 | Cultural Inspection | 16 | Sernie Day 9, Alex Day 12, Listening Session Day 15 |
+| 6 | Five-Year Shock | 18 | Liz, Alex, Gosplan Day 16, War Communism Day 17 |
+| 7 | The Committee Arrives | 20 | the full survival schedule at ×1.2 |
+
+The last wave of a shorter mission is 1.5× its normal size.
 
 ### Maps, difficulty, saves
 
@@ -190,7 +207,8 @@ pop, Sernie's vacuum hum while he drains, research chime, shot ticks. Mute with 
 
 ## Still out
 
-A campaign, real sprites, a human balance pass.
+Real sprites and a human balance pass. Unit bodies are already cached as sprite canvases, so swapping in drawn
+art is a matter of replacing `drawUnitBody` cases with image blits.
 
 ## Art
 

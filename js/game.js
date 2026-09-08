@@ -64,10 +64,29 @@ function invalidateFields() { G.fields.clear(); G.fieldsDirty = true; }
 function footprintTiles(b) { const out = []; for (let y = b.y; y < b.y + b.h; y++) for (let x = b.x; x < b.x + b.w; x++) out.push(tileIndex(x, y)); return out; }
 
 // ---------- init ----------
+function waveFor(day) {
+  const base = WAVES[Math.min(day, 20)]; if (!base) return null;
+  const t = Object.assign({}, base); delete t.lt; delete t.boss;
+  const m = G.mission;
+  if (!m) { if (base.lt) t.lt = base.lt; if (base.boss) t.boss = base.boss; return t; }
+  if (m.schedule === 'full') { if (base.lt) t.lt = base.lt; if (base.boss) t.boss = base.boss; }
+  else { const o = m.schedule[day]; if (o) { if (o.lt) t.lt = o.lt; if (o.boss) t.boss = o.boss; } }
+  if (day === m.days && m.schedule !== 'full') for (const k in t) if (typeof t[k] === 'number') t[k] = Math.round(t[k] * 1.5); // last wave large but unnamed
+  return t;
+}
+function campaignProgress() { try { return JSON.parse(localStorage.getItem('twb_campaign') || '{"unlocked":0,"done":[]}'); } catch (e) { return { unlocked: 0, done: [] }; } }
+function campaignComplete(id) {
+  const p = campaignProgress(); const i = MISSIONS.findIndex(m => m.id === id); if (i < 0) return;
+  if (!p.done.includes(id)) p.done.push(id); p.unlocked = Math.max(p.unlocked, i + 1);
+  try { localStorage.setItem('twb_campaign', JSON.stringify(p)); } catch (e) {}
+}
 function newGame(opts) {
-  opts = opts || {}; G.seed = opts.seed | 0; G.difficulty = DIFFICULTY[opts.difficulty] ? opts.difficulty : 'normal';
+  opts = opts || {}; G.mission = opts.mission ? MISSIONS.find(m => m.id === opts.mission) || null : null;
+  if (G.mission) { opts.seed = G.mission.seed; opts.difficulty = 'normal'; }
+  G.seed = opts.seed | 0; G.difficulty = DIFFICULTY[opts.difficulty] ? opts.difficulty : 'normal';
+  G.winDay = G.mission ? G.mission.days : WIN_DAY; G.waveMul = G.mission ? G.mission.waves : DIFFICULTY[G.difficulty].waves;
   G.time = 0; G.day = 1; G.dayTimer = DAY_LENGTH; G.paused = false; G.speed = 1; G.over = false; G.won = false;
-  G.res = Object.assign({}, START_RES); for (const k in G.res) G.res[k] = Math.round(G.res[k] * DIFFICULTY[G.difficulty].res); G.trust = START_TRUST; G.momentum = START_MOMENTUM;
+  G.res = Object.assign({}, START_RES); for (const k in G.res) G.res[k] = Math.round(G.res[k] * (G.mission ? G.mission.res : DIFFICULTY[G.difficulty].res)); G.trust = START_TRUST; G.momentum = START_MOMENTUM;
   G.buildings = []; G.units = []; G.nextId = 1; G.bmap = new Map(); G.umap = new Map();
   G.grid = new Int32Array(MAP_W * MAP_H).fill(-1);
   G.map = generateMap(G.seed); G.terrain = G.map.terrain; G.seed = G.map.seed;
@@ -96,7 +115,15 @@ function newGame(opts) {
     u.idle = true; u.wave = false; placed++;
   }
   msg('Day 1: Study Group. The fog is quiet. Title the town, wall the choke, muster before the clock runs out.', 'info');
-  msg('The first Wave arrives at the start of Day ' + FIRST_WAVE_DAY + '. Survive Day ' + WIN_DAY + ' to win.', 'warn');
+  if (G.mission) {
+    const idx = MISSIONS.indexOf(G.mission);
+    msg('Mission ' + (idx + 1) + '/' + MISSIONS.length + ' — ' + G.mission.name + '. ' + G.mission.objective, 'warn');
+    if (G.mission.preoccupied) {
+      const spots = [[22, 24], [32, 23], [23, 31], [32, 31], [27, 21], [27, 33]]; let n = 0;
+      for (const [x, y] of spots) { if (n >= G.mission.preoccupied) break; const c = placeBuilding('cottage', x, y, true); if (c) { occupyBuilding(c, 'inherited'); n++; } }
+      G.msgs = G.msgs.filter(m => !m.text.includes('is OCCUPIED')); msg('You inherit ' + n + ' Occupied cottages on the quad. Recapture them before they seed the town.', 'bad');
+    }
+  } else msg('The first Wave arrives at the start of Day ' + FIRST_WAVE_DAY + '. Survive Day ' + G.winDay + ' to win.', 'warn');
 }
 
 // ---------- messages / effects ----------
@@ -788,8 +815,8 @@ function updateBuildings(dt) {
 
 // ---------- waves / days ----------
 function spawnWave(day) {
-  const table = WAVES[day]; if (!table) return;
-  const scale = (1 + G.momentum / 150) * DIFFICULTY[G.difficulty].waves;
+  const table = waveFor(day); if (!table) return;
+  const scale = (1 + G.momentum / 150) * G.waveMul;
   const list = [];
   for (const t in table) {
     if (t === 'lt' || t === 'boss') continue;
@@ -846,7 +873,7 @@ function updateWave(dt) {
     G.wavesBeaten++;
     const gain = w.lost ? 2 : 5; G.trust = clamp(G.trust + gain, 0, 100);
     msg('Wave ' + (w.day - 1) + ' beaten' + (w.lost ? ' (but you lost ground). Trust +2.' : ' clean. Trust +5.'), 'good');
-    if (w.day >= WIN_DAY) gameOver(true, 'The Big One broke on your walls. The fiscal year is survived.');
+    if (w.day >= G.winDay) gameOver(true, G.mission ? G.mission.name + ' is over. ' + (G.mission.id === 'committee' ? 'The fiscal year is survived.' : 'On to the next chapter.') : 'The Big One broke on your walls. The fiscal year is survived.');
     G.wave = null;
   }
 }
@@ -861,10 +888,11 @@ function dayRollover() {
   if (occ) msg(occ + ' occupied tile(s) left standing overnight: Momentum +' + occ * 4 + ', Trust -' + occ * 3 + '.', 'warn');
   if (boom) msg('A fat Treasury paints a target. Momentum +' + boom + '.', 'warn');
   msg('Day ' + G.day + ' — ' + chapterName(G.day) + '.', 'info');
-  if (G.day >= FIRST_WAVE_DAY && G.day <= WIN_DAY) spawnWave(G.day);
+  if (G.day >= FIRST_WAVE_DAY && G.day <= G.winDay) spawnWave(G.day);
 }
 function gameOver(won, why) {
   if (G.over) return; G.over = true; G.won = won; G.overWhy = why; G.paused = true;
+  if (won && G.mission) campaignComplete(G.mission.id);
   msg(why, won ? 'good' : 'bad');
   if (typeof UI !== 'undefined') UI.showEnd();
 }
@@ -938,7 +966,7 @@ function saveGame() {
   const U = ['id', 'type', 'x', 'y', 'hp', 'maxHp', 'state', 'target', 'idle', 'wave', 'persistUsed', 'tantrumDone', 'revived', 'organized', 'home', 'hx', 'hy', 'quarters', 'stolen', 'ltT', 'channel', 'hair', 'armor', 'civTarget', 'atWork'];
   const B = ['id', 'type', 'x', 'y', 'hp', 'state', 'recap', 'recover', 'paint', 'shut', 'deedUsed', 'skin', 'gold', 'pulse', 'treeAdj'];
   const pick = (o, keys) => { const r = {}; for (const k of keys) if (o[k] !== undefined) r[k] = o[k]; return r; };
-  const data = { v: 1, seed: G.seed, difficulty: G.difficulty, time: G.time, day: G.day, dayTimer: G.dayTimer, res: G.res, trust: G.trust, momentum: G.momentum, levyDay: G.levyDay, treasuryZero: G.treasuryZero,
+  const data = { v: 1, seed: G.seed, difficulty: G.difficulty, mission: G.mission ? G.mission.id : null, time: G.time, day: G.day, dayTimer: G.dayTimer, res: G.res, trust: G.trust, momentum: G.momentum, levyDay: G.levyDay, treasuryZero: G.treasuryZero,
     wavesBeaten: G.wavesBeaten, stats: G.stats, tech: { done: [...G.tech.done], current: G.tech.current, timer: G.tech.timer, total: G.tech.total }, trainQ: G.trainQ, muster: G.muster,
     publicFund: G.publicFund, freeze: G.freeze, gatesOpen: G.gatesOpen, seizureBoost: G.seizureBoost, organized: G.organized, raids: G.raids, nextId: G.nextId, vis: Array.from(G.vis),
     buildings: G.buildings.map(b => pick(b, B)), units: G.units.filter(u => !u.dead).map(u => pick(u, U)),
@@ -951,7 +979,7 @@ function hasSave() { try { return !!localStorage.getItem(SAVE_KEY); } catch (e) 
 function loadGame() {
   let data; try { data = JSON.parse(localStorage.getItem(SAVE_KEY)); } catch (e) { data = null; }
   if (!data || data.v !== 1) { msg('No saved game.', 'warn'); return false; }
-  newGame({ seed: data.seed, difficulty: data.difficulty });
+  newGame({ seed: data.seed, difficulty: data.difficulty, mission: data.mission });
   G.loading = true;
   // wipe the fresh town, then restore
   for (const u of G.units.slice()) killUnit(u, true); G.units = [];

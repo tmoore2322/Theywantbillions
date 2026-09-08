@@ -123,6 +123,16 @@ button.big.alt:hover { background:#2a3a5c; }
 .menu-btns { display:flex; gap:12px; justify-content:center; }
 .menu-btns button.big { margin:18px 0 0; }
 .menu-btns button.big[hidden] { display:none; }
+h3.section { text-align:center; margin:12px 0 6px; font-size:13px; color:var(--gold2); }
+#missions { display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; }
+.mission { background:#0f131c; border:1px solid #5a4a22; border-radius:6px; padding:6px 8px; text-align:left; color:var(--cream); font-family:inherit; cursor:pointer; }
+.mission:hover:not(:disabled) { border-color:var(--gold2); background:#181c28; }
+.mission.locked { opacity:0.45; cursor:default; }
+.mission.done { border-color:var(--green); }
+.mission .mn { font-weight:bold; color:var(--gold2); font-size:12px; letter-spacing:0.5px; }
+.mission .md { font-size:10px; color:var(--muted); }
+.mission .mb { font-size:10.5px; line-height:1.3; margin-top:3px; }
+.panel .cols ul { font-size:12.5px; line-height:1.45; }
 #setup { display:flex; gap:18px; align-items:center; justify-content:center; flex-wrap:wrap; margin-top:14px; padding:10px 14px; background:#0f131c; border:1px solid #5a4a22; border-radius:6px; font-size:13px; }
 #setup select, #setup input { background:#0a0f1a; color:var(--cream); border:1px solid #5a4a22; border-radius:4px; padding:4px 6px; font-family:inherit; }
 #setup input { width:90px; }

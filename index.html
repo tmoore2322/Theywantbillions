@@ -75,12 +75,12 @@
         <h3>The loop</h3>
         <ul>
           <li>Day 1 is quiet. Build cottages, a farm, a sawmill; wall the ridge gaps. Research at the Town Hall (T).</li>
-          <li>A Wave arrives at the start of every day from Day 2. Day 16 is the big one.</li>
+          <li>A Wave arrives at the start of every day from Day 2. Day 16 is the big one; Days 17 to 19 bring map bosses; Day 20 the Committee.</li>
           <li>A building at 0 HP is not rubble: it is <b>Occupied</b>. It stops paying you, spawns Activists, drains the Treasury and flips its neighbors faster. Stand a unit next to it to <b>recapture</b>.</li>
           <li><b>Seizure Crews</b> nationalize industry. <b>Agitprop Vans</b> paint. <b>Goons</b> jump walls. <b>Heavies</b> break gates. <b>Nevertheless</b> persists. <b>Care Bears</b> heal in fursuits.</li>
           <li>From Day 10, lieutenants: <b>Sernie Banders</b> vacuums the Treasury, <b>Liz Barren</b> regulates your repairs, <b>Alex Occasion-Cortex</b> shuts your mills.</li>
           <li>Militia are cheap and cost gold every second. <b>Dismiss</b> them between waves.</li>
-          <li>Lose: Town Hall falls, or the Treasury sits at zero for 45s. Win: survive Day 16.</li>
+          <li>Lose: Town Hall falls, or the Treasury sits at zero for 45s. Win: survive Day 20 (or the mission's final day).</li>
         </ul>
       </div>
       <div>
@@ -96,6 +96,9 @@
         </ul>
       </div>
     </div>
+    <h3 class="section">Campaign</h3>
+    <div id="missions"></div>
+    <h3 class="section">Survival</h3>
     <div id="setup">
       <label>Map <select id="map"><option value="county">County Seat (hand-authored)</option><option value="random">Procedural (seed)</option></select></label>
       <label>Seed <input id="seed" type="number" min="1" max="999999" value="" placeholder="0 = County Seat"> <button id="btn-seed-random" type="button">🎲</button></label>
@@ -141,7 +144,7 @@
     <h1 id="end-title"></h1>
     <p id="end-why"></p>
     <div id="end-stats"></div>
-    <button id="btn-restart" class="big">Found a New Town</button>
+    <div class="menu-btns"><button id="btn-next" class="big" hidden>Next</button><button id="btn-restart" class="big alt">Found a New Town</button></div>
   </div>
 </div>
 
