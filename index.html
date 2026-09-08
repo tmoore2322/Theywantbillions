@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>They Want Billions</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="game"></canvas>
+<div id="hud">
+  <div id="topbar" class="frame">
+    <div id="title-block"><div class="t1">THEY WANT</div><div class="t2">BILLIONS</div></div>
+    <div id="resources">
+      <div class="res" title="Wood: walls, cottages, everything. Sawmills by trees."><i>🪵</i><div><b id="r-wood">0</b><small>WOOD</small></div></div>
+      <div class="res" title="Stone: stone walls, towers, civic buildings. Quarries on stone deposits."><i>🪨</i><div><b id="r-stone">0</b><small>STONE</small></div></div>
+      <div class="res" title="Iron: stone towers, field pieces, veterans. Mines on iron deposits."><i>⛓️</i><div><b id="r-iron">0</b><small>IRON</small></div></div>
+      <div class="res" title="Food: cottages eat 3/day. Short = gold income halved."><i>🍞</i><div><b id="r-food">0</b><small>FOOD</small></div></div>
+      <div class="res" title="Households used / capacity. Buildings and units need workers."><i>🏘️</i><div><b id="r-hh">0/0</b><small>HOUSEHOLDS</small></div></div>
+      <div class="res" title="Gold: operating cash."><i>🪙</i><div><b id="r-gold">0</b><small>GOLD</small></div></div>
+      <div class="res treas" title="Treasury: the vault. If it sits at zero for 45s, you lose."><i>🏛️</i><div><b id="r-treasury">0</b><small>TREASURY</small></div></div>
+    </div>
+    <div id="trust-block" title="Trust: rises when you win clean and recapture; falls when occupied tiles sit overnight or you levy. Faster musters at high Trust."><div class="tlabel">★ TRUST</div><div class="tbar"><div id="trust-fill"></div></div><div id="trust-val">50/100</div></div>
+    <div id="sysbtns">
+      <button id="btn-pause" class="hud-btn" title="Pause (Space)">⏸</button>
+      <button id="btn-speed" class="hud-btn" title="Game speed (+)">1x</button>
+      <button id="btn-tech" class="hud-btn" title="Tech tree (T)">⚙ Tech</button>
+      <button id="btn-save" class="hud-btn" title="Save (F5)">💾</button>
+      <button id="btn-load2" class="hud-btn" title="Load (F9)">📂</button>
+      <button id="btn-menu" class="hud-btn" title="Menu">☰</button>
+      <button id="btn-mute" class="hud-btn" title="Sound">🔊</button>
+      <button id="btn-help" class="hud-btn" title="Help">?</button>
+    </div>
+  </div>
+  <div id="topcenter">
+    <div id="clockwrap" class="frame"><canvas id="clock" width="86" height="86"></canvas><div><div id="countdown">02:00</div><div class="clabel" id="clabel">UNTIL NEXT WAVE</div></div></div>
+    <div id="daypanel" class="frame"><div class="dlabel">DAY</div><div id="day">1</div><div id="chapter">Study Group</div></div>
+  </div>
+  <div id="warnline"></div>
+  <div id="momentum" class="frame" title="Momentum: the Wave's meter. Occupied tiles, a fat Treasury and levies raise it; chapels and recaptures lower it. Bigger waves as it fills.">
+    <div class="mlabel">MOMENTUM</div>
+    <div class="thermo"><div id="mom-fill"></div></div>
+    <div id="mom-val">10%</div><div class="mlabel2">FILLING</div>
+  </div>
+  <div id="messages"></div>
+  <div id="minimap-wrap" class="frame"><div id="occ-alert" hidden>⚠ OCCUPIED</div><canvas id="minimap" width="236" height="132"></canvas></div>
+  <div id="tray" class="frame">
+    <div id="tabs">
+      <button data-tab="frontier">Frontier <kbd>Z</kbd></button>
+      <button data-tab="charter">Charter <kbd>X</kbd></button>
+      <button data-tab="workshop">Workshop <kbd>C</kbd></button>
+      <button data-tab="muster">Muster <kbd>V</kbd></button>
+    </div>
+    <div id="tray-items"></div>
+    <div id="actions">
+      <button id="btn-muster" title="Muster one Citizen Militia at a Militia Hall">Muster <kbd>M</kbd></button>
+      <button id="btn-muster5" title="Muster five">×5</button>
+      <button id="btn-dismiss" title="Dismiss selected militia, or all (stops upkeep)">Dismiss <kbd>K</kbd></button>
+      <button id="btn-selmil" title="Select all militia">Militia <kbd>F</kbd></button>
+      <button id="btn-selall" title="Select every soldier">Army <kbd>G</kbd></button>
+      <button id="btn-tech2" title="Tech tree">Tech <kbd>T</kbd></button>
+      <button id="btn-levy" class="danger" title="+200 gold now. Trust -15, Momentum +12. Once per day.">War Levy <kbd>L</kbd></button>
+    </div>
+  </div>
+  <div id="card" class="frame"></div>
+</div>
+
+<div id="overlay" class="modal">
+  <div class="panel">
+    <h1>THEY WANT BILLIONS</h1>
+    <div class="sub">A Colony Survival Strategy</div>
+    <p class="tag">They don’t want your walls. They want the budget.<br><em>Survive the fiscal year.</em></p>
+    <div class="cols">
+      <div>
+        <h3>The loop</h3>
+        <ul>
+          <li>Day 1 is quiet. Build cottages, a farm, a sawmill; wall the ridge gaps. Research at the Town Hall (T).</li>
+          <li>A Wave arrives at the start of every day from Day 2. Day 16 is the big one.</li>
+          <li>A building at 0 HP is not rubble: it is <b>Occupied</b>. It stops paying you, spawns Activists, drains the Treasury and flips its neighbors faster. Stand a unit next to it to <b>recapture</b>.</li>
+          <li><b>Seizure Crews</b> nationalize industry. <b>Agitprop Vans</b> paint. <b>Goons</b> jump walls. <b>Tankies</b> break gates. <b>Nevertheless</b> persists. <b>Care Bears</b> heal.</li>
+          <li>From Day 10, lieutenants: <b>Sernie Banders</b> vacuums the Treasury, <b>Liz Barren</b> regulates your repairs, <b>Alex Occasion-Cortex</b> shuts your mills.</li>
+          <li>Militia are cheap and cost gold every second. <b>Dismiss</b> them between waves.</li>
+          <li>Lose: Town Hall falls, or the Treasury sits at zero for 45s. Win: survive Day 16.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Controls</h3>
+        <ul>
+          <li><kbd>Space</kbd> pause / resume (command while paused)</li>
+          <li><kbd>WASD</kbd> / arrows / middle-drag: pan · wheel: zoom · <kbd>H</kbd> home</li>
+          <li><kbd>Z</kbd> <kbd>X</kbd> <kbd>C</kbd> <kbd>V</kbd> tray tabs · <kbd>1</kbd>–<kbd>9</kbd> pick · click to place (drag for walls) · right-click / <kbd>Esc</kbd> cancel</li>
+          <li>Left-click select · drag box · right-click: move / attack / recapture / retrieve</li>
+          <li><kbd>M</kbd> muster militia (<kbd>Shift</kbd>+M ×5) · <kbd>K</kbd> dismiss · <kbd>N</kbd> train Minuteman · <kbd>T</kbd> tech</li>
+          <li><kbd>F</kbd> select militia · <kbd>G</kbd> select army · <kbd>R</kbd> repair · <kbd>Del</kbd> demolish · <kbd>L</kbd> war levy</li>
+          <li><kbd>F5</kbd> save · <kbd>F9</kbd> load · ☰ menu (new map, seed, difficulty)</li>
+        </ul>
+      </div>
+    </div>
+    <div id="setup">
+      <label>Map <select id="map"><option value="county">County Seat (hand-authored)</option><option value="random">Procedural (seed)</option></select></label>
+      <label>Seed <input id="seed" type="number" min="1" max="999999" value="" placeholder="0 = County Seat"> <button id="btn-seed-random" type="button">🎲</button></label>
+      <span class="diffs">
+        <label><input type="radio" name="diff" value="easy"> Study Group <small>waves ×0.7, fat start</small></label>
+        <label><input type="radio" name="diff" value="normal" checked> General Strike <small>the intended game</small></label>
+        <label><input type="radio" name="diff" value="hard"> Five-Year Shock <small>waves ×1.3, lean start</small></label>
+      </span>
+    </div>
+    <div class="menu-btns">
+      <button id="btn-start" class="big">Found the Town</button>
+      <button id="btn-load" class="big alt" hidden>Load Saved Town (F9)</button>
+      <button id="btn-resume" class="big alt" hidden>Resume</button>
+    </div>
+  </div>
+</div>
+<div id="help" class="modal" hidden>
+  <div class="panel small-panel">
+    <h2>Layout doctrine</h2>
+    <ul>
+      <li>Town Hall center; Treasury touching it, never on a wall.</li>
+      <li>Homes in a dense inner block one road off the wall. A house on the wall is a spawn node.</li>
+      <li>Sawmill, quarry, mine and workshop in a walled pocket with an inward gate. Farms behind the curtain.</li>
+      <li>Militia Hall beside the main gate. Chapel on the housing side. School inside the court radius, off the wall.</li>
+      <li>Print Shop and Deed Office in the inner ring: Goons hunt them.</li>
+      <li>Gates are weapons: stakes and a killbox in front of the gate with towers on both sides.</li>
+      <li>A fat Treasury raises Momentum and calls a bigger Wave. Chapels bleed Momentum.</li>
+    </ul>
+    <button id="btn-close-help" class="big">Back</button>
+  </div>
+</div>
+<div id="tech" class="modal" hidden>
+  <div class="panel tech-panel">
+    <h2>CHARTER OF THE TOWN — Tech</h2>
+    <div class="sub">One research at a time, at the Town Hall. Guns-only dies. Paper-only gets walked through.</div>
+    <div id="tech-cols"></div>
+    <div id="tech-status"></div>
+    <button id="btn-close-tech" class="big">Back (T)</button>
+  </div>
+</div>
+<div id="end" class="modal" hidden>
+  <div class="panel">
+    <h1 id="end-title"></h1>
+    <p id="end-why"></p>
+    <div id="end-stats"></div>
+    <button id="btn-restart" class="big">Found a New Town</button>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/map.js"></script>
+<script src="js/path.js"></script>
+<script src="js/sound.js"></script>
+<script src="js/game.js"></script>
+<script src="js/render.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
