@@ -245,11 +245,21 @@ function drawUnit(ctx, u, zoom, icon) {
     person(ctx, X, Y, '#ff8fd8', '#5a3a2a', { hat: '#ff5fd0' });
     ctx.fillStyle = '#eee'; ctx.beginPath(); ctx.moveTo(X + 5, Y - 18); ctx.lineTo(X + 14, Y - 24); ctx.lineTo(X + 14, Y - 12); ctx.closePath(); ctx.fill();
     if (!u.persistUsed) { ctx.strokeStyle = '#ff5fd0'; ctx.lineWidth = 2; ctx.shadowColor = '#ff5fd0'; ctx.shadowBlur = 8; ctx.beginPath(); ctx.ellipse(X, Y, 14, 7, 0, 0, 7); ctx.stroke(); ctx.shadowBlur = 0; }
-  } else if (t === 'carebear') {
-    ctx.fillStyle = '#a05a9a'; ctx.beginPath(); ctx.ellipse(X, Y - 14, 13, 15, 0, 0, 7); ctx.fill();
-    ctx.beginPath(); ctx.arc(X - 8, Y - 30, 4, 0, 7); ctx.arc(X + 8, Y - 30, 4, 0, 7); ctx.fill(); ctx.beginPath(); ctx.arc(X, Y - 27, 7, 0, 7); ctx.fill();
-    ctx.fillStyle = '#d23c2f'; ctx.beginPath(); ctx.moveTo(X, Y - 10); ctx.lineTo(X - 5, Y - 16); ctx.lineTo(X, Y - 19); ctx.lineTo(X + 5, Y - 16); ctx.closePath(); ctx.fill();
-    ctx.fillStyle = '#111'; ctx.fillRect(X - 3, Y - 28, 1.5, 1.5); ctx.fillRect(X + 2, Y - 28, 1.5, 1.5);
+  } else if (t === 'thicc') {
+    // mobility scooter: deck, wheels, tiller
+    ctx.fillStyle = '#b23a2f'; ctx.fillRect(X - 16, Y - 8, 32, 6);
+    ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(X - 12, Y - 2, 4, 0, 7); ctx.arc(X + 12, Y - 2, 4, 0, 7); ctx.fill();
+    ctx.fillStyle = '#c9c4b4'; ctx.fillRect(X + 12, Y - 34, 2, 26); ctx.fillRect(X + 6, Y - 35, 14, 3);
+    ctx.fillStyle = '#ffe14d'; ctx.fillRect(X + 14, Y - 20, 6, 8); // basket
+    // rider: big round body in a bright tee, small head, headband
+    ctx.fillStyle = '#ff7ab8'; ctx.beginPath(); ctx.ellipse(X - 2, Y - 18, 14, 13, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#ffffff'; ctx.font = 'bold 6px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('EVERY', X - 2, Y - 20); ctx.fillText('BODY', X - 2, Y - 14);
+    ctx.fillStyle = '#e8c8a8'; ctx.beginPath(); ctx.arc(X - 2, Y - 35, 6, 0, 7); ctx.fill();
+    ctx.fillStyle = '#5ff0ff'; ctx.fillRect(X - 8, Y - 39, 12, 2.5);
+    ctx.fillStyle = '#e8c8a8'; ctx.fillRect(X + 4, Y - 26, 8, 3); // arm to the tiller
+    // flag: "HAES"
+    ctx.fillStyle = '#c9b48a'; ctx.fillRect(X - 18, Y - 46, 1.5, 40); ctx.fillStyle = '#a6ff4d'; ctx.fillRect(X - 17, Y - 46, 14, 8); ctx.fillStyle = '#1a2a10'; ctx.font = 'bold 5px sans-serif'; ctx.fillText('HAES', X - 10, Y - 40);
+    if (!icon) { ctx.strokeStyle = 'rgba(255,122,184,0.5)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.ellipse(X, Y, u.def.heals.radius * 32, u.def.heals.radius * 16, 0, 0, 7); ctx.stroke(); }
   } else if (t === 'sernie') {
     drawBlock(ctx, u.x - 0.6, u.y - 0.5, 1.2, 1.0, 0.8, '#b08a2a');
     ctx.fillStyle = '#5a4a12'; ctx.fillRect(X - 8, Y - 40, 16, 16); ctx.fillStyle = '#c9a227'; ctx.beginPath(); ctx.arc(X, Y - 32, 5, 0, 7); ctx.fill();

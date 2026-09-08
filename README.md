@@ -45,7 +45,7 @@ launcher only exists so the browser does not cache stale files while you are edi
 | 9 | ANTIFA Goon | packs of 3, jumps walls and gates, hunts Print Shop, Deed Office, Town Hall |
 | 9 | Tankie | armor 6, gate and tower breaker |
 | 10 | Nevertheless | two HP bars (Persist), megaphone deafens units and towers (half fire rate) in 4 tiles |
-| 12 | Care Bear | heals Man-Children, Tankies and Goons |
+| 12 | Thicc Support | body-positivity healer on a mobility scooter; heals Man-Children, Tankies and Goons |
 
 ### Lieutenants
 

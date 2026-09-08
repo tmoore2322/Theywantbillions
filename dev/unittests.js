@@ -11,7 +11,7 @@ window.runTests = function () {
   T('activist chews wall instead', () => { fresh(); wallLine(); const a = enemy('activist', 28.5, 18.5); steps(30 * 10); const chewed = G.buildings.some(b => b.type === 'wall_wood' && b.hp < b.maxHp); return (a.y < 22 && chewed) || { y: a.y, chewed }; });
   T('nevertheless persists', () => { fresh(); const n = enemy('nevertheless', 40.5, 40.5); damageUnit(n, 1000); return (!n.dead && n.persistUsed && n.hp === n.def.hp2) || { dead: n.dead, hp: n.hp }; });
   T('tankie armor', () => { fresh(); const t = enemy('tankie', 40.5, 40.5); damageUnit(t, 8); return t.hp === t.maxHp - 2 || t.hp; });
-  T('care bear heals tankie', () => { fresh(); const t = enemy('tankie', 45.5, 45.5); t.hp = 100; const c = enemy('carebear', 45.5, 46.5); steps(30 * 2); return t.hp > 110 || t.hp; });
+  T('thicc support heals tankie', () => { fresh(); const t = enemy('tankie', 45.5, 45.5); t.hp = 100; const c = enemy('thicc', 45.5, 46.5); steps(30 * 2); return t.hp > 110 || t.hp; });
   T('agitprop paints', () => { fresh(); const c = placeBuilding('cottage', 36, 30); const v = enemy('agitprop', 40.5, 31.5); v.target = c.id; v.fieldKey = 'e:b' + c.id; steps(30 * 6); return c.paint > 0 || { paint: c.paint, vx: v.x, vy: v.y }; });
   T('painted building takes 1.5x', () => { fresh(); const c = placeBuilding('cottage', 36, 30); c.paint = 30; damageBuilding(c, 10); return Math.abs(c.hp - (c.maxHp - 15)) < 0.01 || c.hp; });
   T('print shop scrubs paint', () => { fresh(); G.tech.done.add('gazette'); const c = placeBuilding('cottage', 36, 30); const p = placeBuilding('printshop', 38, 27); c.paint = 50; steps(30 * 9); return c.paint <= 0 || c.paint; });

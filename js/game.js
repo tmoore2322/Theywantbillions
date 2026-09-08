@@ -219,7 +219,7 @@ function damageEnemyBuilding(b, amt) {
     G.raids++; G.momentum = clamp(G.momentum + 5, 0, 100);
     const bl = ENCAMP_DEF.backlash; const list = [];
     for (const t in bl) for (let i = 0; i < bl[t] + Math.floor(G.day / 4); i++) list.push(t);
-    if (G.day >= 9) list.push('goon', 'goon', 'goon'); if (G.day >= 12) list.push('carebear');
+    if (G.day >= 9) list.push('goon', 'goon', 'goon'); if (G.day >= 12) list.push('thicc');
     const cx = b.x + 1.5, cy = b.y + 1.5;
     removeBuilding(b); fx('boom', cx, cy);
     for (const t of list) { const p = freeTileNear({ x: cx | 0, y: cy | 0, w: 1, h: 1 }); const u = spawnUnit(t, p.x + (Math.random() - 0.5), p.y + (Math.random() - 0.5)); u.idle = false; u.wave = false; }
@@ -443,7 +443,7 @@ function updateEnemy(u, dt) {
   // retarget periodically
   u.retarget -= dt;
   if (u.retarget <= 0 || !u.target || !G.bmap.get(u.target) || G.bmap.get(u.target).state !== 'player') { u.retarget = 3 + Math.random(); enemyPickTarget(u); u.next = -1; }
-  // Care Bear: shadow a patient
+  // Thicc Support: shadow a patient
   if (u.def.heals) {
     const pat = nearestUnit(u.x, u.y, 14, 'enemy', p => p !== u && u.def.heals.types.includes(p.type) && !p.idle);
     if (pat) { if (Math.hypot(pat.x - u.x, pat.y - u.y) > 1.8) { const tt = unitTile(pat); const key = 'e:t' + tt; if (u.fieldKey !== key) { u.fieldKey = key; u.next = -1; } followField(u, getField(key, [tt], enemyCost), dt); } return; }
